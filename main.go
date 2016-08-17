@@ -68,7 +68,7 @@ func worker(workDist chan work, w *sync.WaitGroup) {
 		// read file
 		fd, err := os.Open(job.input)
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "read file %s failed: %s", job.input, err.Error())
+			fmt.Fprintf(os.Stderr, "read file %s failed: %s\n", job.input, err.Error())
 			return
 		}
 
@@ -82,11 +82,15 @@ func worker(workDist chan work, w *sync.WaitGroup) {
 
 		// evaluate features
 		stat := output.NewStats()
-		stats.Metadata(stat, job.input, fconf)
+		err = stats.Metadata(stat, job.input, fconf)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "could not determine metadata: %s\n", err.Error())
+			return
+		}
 
 		err = evaluate(cnf, &stat.Fts, fconf)
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "evaluation failed: %s", err.Error())
+			fmt.Fprintf(os.Stderr, "evaluation failed: %s\n", err.Error())
 			return
 		}
 
@@ -161,10 +165,10 @@ func main() {
 		} else if arg == "-f" || arg == "--format" {
 			form := os.Args[i+1]
 			if form != "json" && form != "xml" {
-				fmt.Fprintf(os.Stderr, "invalid format supplied: '%s'", form)
+				fmt.Fprintf(os.Stderr, "invalid format supplied: '%s'\n", form)
 				os.Exit(1)
 			} else if form == "xml" {
-				fmt.Fprint(os.Stderr, "XML not yet supported")
+				fmt.Fprint(os.Stderr, "XML not yet supported\n")
 				os.Exit(1)
 			}
 			skip = true
@@ -174,10 +178,10 @@ func main() {
 		} else if arg == "-u" || arg == "--units" {
 			u, err := strconv.Atoi(os.Args[i+1])
 			if err != nil {
-				fmt.Fprintf(os.Stderr, "--units parameter invalid: %s", err.Error())
+				fmt.Fprintf(os.Stderr, "--units parameter invalid: %s\n", err.Error())
 				os.Exit(1)
 			} else if u <= 0 {
-				fmt.Fprintf(os.Stderr, "--units must be positive")
+				fmt.Fprintf(os.Stderr, "--units must be positive\n")
 				os.Exit(1)
 			}
 			units = u

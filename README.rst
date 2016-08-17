@@ -151,6 +151,7 @@ SAT competition 2016 files:
 
 * ``esawn_uw3.debugged.cnf`` (1.4 GB) in *app16* took 1 hour and 13 minutes
 * ``bench_573.smt2.cnf`` (1.6 MB) in *Agile* took 1 second
+* SAT competition 2009 files (5.9 GB) have been computed in 2 hours and 16 minutes
 
 I am using my Thinkpad x220t with 16GB RAM and an Intel Core
 i5-2520M CPU (2.50GHz) as reference system here.
