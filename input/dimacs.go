@@ -83,7 +83,7 @@ func consumeWord(cnf *sat.CNF, st *parsingState, conf *ParsingConfig, nl bool) e
 	if st.mode >= 2 {
 		i, err := strconv.Atoi(word)
 		if err != nil {
-			return err
+			return withPos(st, err.Error())
 		}
 		integer = i
 	}
