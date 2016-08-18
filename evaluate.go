@@ -195,7 +195,7 @@ func evaluateOccurence(cnf *sat.CNF, feat *output.Features, fconf *stats.Feature
 			continue
 		}
 		class := int((100.0 * freq[posEquiv(lit, cnf.NbVars)]) / 5.0)
-		if class == 20 {
+		if class >= 20 {
 			class = 19
 		}
 		*freqFeats[class] += 1
@@ -480,6 +480,11 @@ func evaluate(cnf *sat.CNF, feat *output.Features, fconf *stats.FeatureConfig) e
 	err = evaluateConstant(cnf, feat, fconf)
 	if err != nil {
 		return err
+	}
+
+	if cnf.NbVars == 0 || cnf.NbClauses == 0 {
+		// it is pointless to continue beyond this point
+		return nil
 	}
 
 	err = evaluateOccurence(cnf, feat, fconf)
