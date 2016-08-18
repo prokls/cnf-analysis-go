@@ -178,7 +178,7 @@ func ReadCNFFile(fd io.Reader, conf *ParsingConfig) (*sat.CNF, error) {
 
 	// terminate clause
 	consumeByte(byte('\n'), cnf, &st, conf)
-	if cnf.Lits[len(cnf.Lits)-1] != 0 {
+	if len(cnf.Lits) > 0 && cnf.Lits[len(cnf.Lits)-1] != 0 {
 		return nil, fmt.Errorf("Missing 0 to terminate last clause")
 	}
 
