@@ -1,6 +1,9 @@
 package main
 
 import (
+	"fmt"
+	"math"
+
 	"github.com/prokls/cnf-analysis-go/output"
 	"github.com/prokls/cnf-analysis-go/sat"
 	"github.com/prokls/cnf-analysis-go/stats"
@@ -74,6 +77,9 @@ func evaluateConstant(cnf *sat.CNF, feat *output.Features, fconf *stats.FeatureC
 				feat.VariablesSmallest = uint32(-lit)
 				initSmallest = true
 			}
+		}
+		if length == math.MaxUint16 {
+			return fmt.Errorf("maximum clause length reached with %d - aborting", length)
 		}
 	}
 
